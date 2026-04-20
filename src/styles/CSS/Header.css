@@ -1,0 +1,62 @@
+.header {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1rem;
+  background-color: #c42b10;
+  color: white;
+   justify-content: space-around; /* Distributes items on the main axis */
+  align-items: flex-end;   
+  
+}
+
+.header nav ul {
+  
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  
+}
+
+.header nav a {
+  color: white;
+  text-decoration: none;
+}
+
+.count {
+  background:#360a02;
+  color:white;
+  border-radius: 15px;
+ padding: 6px 12px; 
+ 
+  font-size: 16px;
+
+  display: flex;                /* ✅ REQUIRED */
+  align-items: center;          /* vertical center */
+  justify-content: center;  
+    height: 13px;
+    width: 30px;
+    align-items: center;
+    font-weight: 900;
+    
+}
+.logo{
+  font-size: 50px;
+  font-weight: bold;
+    padding: 25px;
+}
+
+.rectangle {
+  border: 2px solid red;
+  border-radius: 18px;
+  padding: 5px;
+   display: flex;
+   align-items: center;
+   justify-content: space-around;
+  width: 200px;
+  font-size: 16px;
+  height: 30px;
+  font-weight: 900;
+  background-color: 
+#8a220f
+; /* Blue color */
+}
