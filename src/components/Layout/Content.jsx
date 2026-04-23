@@ -25,14 +25,31 @@ function Content() {
 
         </div>
         <div className="items">
-           {items.map((item, index) => (
-          <div key={index}>
-            <h2>{item.title}</h2>
-            <p>{item.summery}</p>
-            <h3>${item.price}</h3>
-            <hr className="line" />
-          </div>
-        ))}
+      {items.map((item, index) => (
+  <div key={index}>
+    
+    <div className="item-row">
+      
+      <div className="item-info">
+        <h2>{item.title}</h2>
+        <p>{item.summery}</p>
+        <h3>${item.price}</h3>
+      </div>
+     
+      <div className="add-items">
+        <div className='input_items_heading'>
+          <h4>Amount</h4>
+        <input type="number" className='input_style' placeholder="1" />
+        </div>
+        <button className="add-btn">Add</button>
+      </div>
+
+    </div>
+
+    <hr className="line" />
+    
+  </div>
+))}
           
         </div>
         
