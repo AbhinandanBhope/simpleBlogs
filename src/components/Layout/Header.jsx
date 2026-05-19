@@ -1,18 +1,16 @@
 import React from 'react'
-import  '../../styles/CSS/Header.css'
+import '../../styles/CSS/Header.css'
 
-function Header() {
-  let count =0;
+function Header({ cartCount }) {
   return (
-   <header className="header">
+    <header className="header">
       <div className="logo">React Meals</div>
       <nav>
         <ul>
-          <div class="rectangle">
-          <li><label htmlFor="home">Your Cart</label></li>
-             <li className='count'><label htmlFor="Count"></label>{count}</li>
-          
-        </div>
+          <div className="rectangle">
+            <li><label htmlFor="home" onClick={() => { cartCount }}>Your Cart</label></li>
+            <li className='count'><label htmlFor="Count"></label>{cartCount}</li>
+          </div>
         </ul>
       </nav>
     </header>

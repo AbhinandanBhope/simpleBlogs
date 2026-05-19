@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import '../../styles/CSS/Content.css'
 
-function Content() {
+function Content({ onAddToCart }) {
   const [items] = useState([
     {
       title: "Burger",
@@ -25,6 +25,7 @@ function Content() {
   const handleAdd = (item, index) => {
     const qty = amounts[index] !== undefined ? amounts[index] : 1;
     const total = (parseFloat(item.price) * qty).toFixed(2);
+    onAddToCart(qty);
     setPopupData({ isOpen: true, total, title: item.title });
   };
 
@@ -41,8 +42,8 @@ function Content() {
         }}>
           <h2 style={{ fontSize: '1.8rem', marginBottom: '15px' }}>Added to Cart! 🛒</h2>
           <p style={{ fontSize: '1.2rem', marginBottom: '25px' }}>{popupData.title}: <strong>${popupData.total}</strong></p>
-          <button 
-            onClick={() => setPopupData({ ...popupData, isOpen: false })} 
+          <button
+            onClick={() => setPopupData({ ...popupData, isOpen: false })}
             className="add-btn"
             style={{ fontSize: '1rem', padding: '10px 30px', borderRadius: '15px' }}
           >
@@ -69,11 +70,11 @@ function Content() {
               <div className="add-items">
                 <div className='input_items_heading'>
                   <h4>Amount</h4>
-                  <input 
-                    type="number" 
-                    className='input_style' 
+                  <input
+                    type="number"
+                    className='input_style'
                     min="1"
-                    placeholder="1" 
+                    placeholder="1"
                     value={amounts[index] !== undefined ? amounts[index] : ''}
                     onChange={(e) => handleAmountChange(index, parseInt(e.target.value) || 1)}
                   />
