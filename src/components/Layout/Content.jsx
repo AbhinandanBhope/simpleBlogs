@@ -25,16 +25,40 @@ function Content() {
   const handleAmountChange = (index, value) => {
     setAmounts({ ...amounts, [index]: Math.max(1, value) });
   };
-  const handleItems = (item, total) => {
-    setItems([...items2, { ...item, total }]);
+  const handleItems = (item, total, qty) => {
+    setItems(prevItems => {
+      const updatedItems = [...prevItems];
+
+      // Try to find if this item already exists by its title
+      const existingItemIndex = updatedItems.findIndex(it => it.title === item.title);
+
+      if (existingItemIndex !== -1) {
+        // If item exists, update its total price and qty
+        const currentTotal = parseFloat(updatedItems[existingItemIndex].total);
+        const newTotal = (currentTotal + parseFloat(total)).toFixed(2);
+        const currentQty = updatedItems[existingItemIndex].qty || 0;
+        updatedItems[existingItemIndex] = { ...updatedItems[existingItemIndex], total: newTotal, qty: currentQty + qty };
+      } else {
+        // If item is new, add it to the array
+        updatedItems.push({ ...item, total, qty });
+      }
+
+      return updatedItems;
+    });
   }
+
+  const handleDelete = (index) => {
+    const itemToDelete = items2[index];
+    handleAddToCart(-itemToDelete.qty);
+    setItems(prevItems => prevItems.filter((_, i) => i !== index));
+  };
 
   const handleAdd = (item, index) => {
     console.log(item)
     const qty = amounts[index] !== undefined ? amounts[index] : 1;
     const total = (parseFloat(item.price) * qty).toFixed(2);
     handleAddToCart(qty);
-    handleItems(item, total);
+    handleItems(item, total, qty);
     setPopupData({ isOpen: true, total, title: item.title });
   };
 
@@ -52,8 +76,17 @@ function Content() {
           <h2 style={{ fontSize: '1.8rem', marginBottom: '15px' }}>Your Cart 🛒</h2>
           <div style={{ maxHeight: '40vh', overflowY: 'auto', width: '100%' }}>
             {items2.map((item, index) => (
-              <div key={index} style={{ borderBottom: '1px solid #ccc', padding: '10px 0' }}>
-                <p style={{ fontSize: '1.2rem', margin: 0 }}>{item.title}: <strong>${item.total}</strong></p>
+              <div key={index} style={{ borderBottom: '1px solid #ccc', padding: '10px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <p style={{ fontSize: '1.2rem', margin: 0, textAlign: 'left' }}>
+                  {item.title} (x{item.qty})<br />
+                  <strong>${item.total}</strong>
+                </p>
+                <button 
+                  onClick={() => handleDelete(index)} 
+                  style={{ backgroundColor: '#ff4d4f', color: 'white', border: 'none', borderRadius: '5px', padding: '8px 12px', cursor: 'pointer', fontWeight: 'bold' }}
+                >
+                  Delete
+                </button>
               </div>
             ))}
           </div>
