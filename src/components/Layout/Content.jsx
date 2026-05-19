@@ -4,7 +4,7 @@ import { CartCountContext } from '../../context/CartCount'
 
 function Content() {
   const { handleAddToCart } = useContext(CartCountContext)
-  
+
   const [items] = useState([
     {
       title: "Burger",
@@ -19,16 +19,22 @@ function Content() {
   ]);
 
   const [amounts, setAmounts] = useState({});
+  const [items2, setItems] = useState([]);
   const [popupData, setPopupData] = useState({ isOpen: false, total: 0, title: '' });
 
   const handleAmountChange = (index, value) => {
     setAmounts({ ...amounts, [index]: Math.max(1, value) });
   };
+  const handleItems = (item, total) => {
+    setItems([...items2, { ...item, total }]);
+  }
 
   const handleAdd = (item, index) => {
+    console.log(item)
     const qty = amounts[index] !== undefined ? amounts[index] : 1;
     const total = (parseFloat(item.price) * qty).toFixed(2);
     handleAddToCart(qty);
+    handleItems(item, total);
     setPopupData({ isOpen: true, total, title: item.title });
   };
 
@@ -43,12 +49,19 @@ function Content() {
           display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
           backgroundColor: 'white', color: 'black', textAlign: 'center'
         }}>
-          <h2 style={{ fontSize: '1.8rem', marginBottom: '15px' }}>Added to Cart! 🛒</h2>
-          <p style={{ fontSize: '1.2rem', marginBottom: '25px' }}>{popupData.title}: <strong>${popupData.total}</strong></p>
+          <h2 style={{ fontSize: '1.8rem', marginBottom: '15px' }}>Your Cart 🛒</h2>
+          <div style={{ maxHeight: '40vh', overflowY: 'auto', width: '100%' }}>
+            {items2.map((item, index) => (
+              <div key={index} style={{ borderBottom: '1px solid #ccc', padding: '10px 0' }}>
+                <p style={{ fontSize: '1.2rem', margin: 0 }}>{item.title}: <strong>${item.total}</strong></p>
+              </div>
+            ))}
+          </div>
+          <h1 style={{ marginTop: '20px', fontSize: '1.5rem' }}>Total: ${items2.reduce((total, item) => total + parseFloat(item.total), 0).toFixed(2)}</h1>
           <button
             onClick={() => setPopupData({ ...popupData, isOpen: false })}
             className="add-btn"
-            style={{ fontSize: '1rem', padding: '10px 30px', borderRadius: '15px' }}
+            style={{ fontSize: '1rem', padding: '10px 30px', borderRadius: '15px', marginTop: '15px' }}
           >
             Close
           </button>
