@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import '../../styles/CSS/Content.css'
+import { CartCountContext } from '../../context/CartCount'
 
-function Content({ onAddToCart }) {
+function Content() {
+  const { handleAddToCart } = useContext(CartCountContext)
+  
   const [items] = useState([
     {
       title: "Burger",
@@ -25,7 +28,7 @@ function Content({ onAddToCart }) {
   const handleAdd = (item, index) => {
     const qty = amounts[index] !== undefined ? amounts[index] : 1;
     const total = (parseFloat(item.price) * qty).toFixed(2);
-    onAddToCart(qty);
+    handleAddToCart(qty);
     setPopupData({ isOpen: true, total, title: item.title });
   };
 

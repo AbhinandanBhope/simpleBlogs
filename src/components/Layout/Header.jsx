@@ -1,14 +1,17 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import '../../styles/CSS/Header.css'
+import { CartCountContext } from '../../context/CartCount'
 
-function Header({ cartCount }) {
+function Header() {
+  const { cartCount } = useContext(CartCountContext)
+
   return (
     <header className="header">
       <div className="logo">React Meals</div>
       <nav>
         <ul>
           <div className="rectangle">
-            <li><label htmlFor="home" onClick={() => { cartCount }}>Your Cart</label></li>
+            <li><label htmlFor="home">Your Cart</label></li>
             <li className='count'><label htmlFor="Count"></label>{cartCount}</li>
           </div>
         </ul>
