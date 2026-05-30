@@ -2,12 +2,13 @@ import React from "react";
 import Header from "./components/Layout/Header";
 import Content from "./components/Layout/Content";
 import { CartCountProvider } from "./context/CartCount";
-
-function App() {
+import { useState } from "react";
+function App(props) {
+  const [showPopup, setShowPopup] = useState(false)
   return (
     <CartCountProvider>
-      <Header />
-      <Content />
+      <Header setShowPopup={setShowPopup} />
+      <Content showPopup={showPopup} setShowPopup={setShowPopup} />
     </CartCountProvider>
   );
 }

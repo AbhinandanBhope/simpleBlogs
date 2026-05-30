@@ -1,22 +1,22 @@
 import React, { useState, useContext } from 'react'
 import '../../styles/CSS/Content.css'
 import { CartCountContext } from '../../context/CartCount'
+import { useAppSelector, useAppDispatch } from "../../store/store";
+import { addItem } from "../../features/addMenuSlice";
 
-function Content() {
+function Content(props) {
+   const menu = useAppSelector((state) => state.addMenu);
+  const dispatch = useAppDispatch();
   const { handleAddToCart } = useContext(CartCountContext)
+  
+;
+  
 
-  const [items] = useState([
-    {
-      title: "Burger",
-      summary: "lorem loerem lorem",
-      price: "10.99"
-    },
-    {
-      title: "Pizza",
-      summary: "Cheesy pizza loaded with toppings",
-      price: "12.99"
-    }
-  ]);
+  const [formData, setFormData] = useState({
+  title: "",
+  summary: "",
+  price: "",
+});
 
   const [amounts, setAmounts] = useState({});
   const [items2, setItems] = useState([]);
@@ -101,13 +101,69 @@ function Content() {
         </dialog>
       )}
 
+     {props.showPopup && (
+  <div className="popup-overlay">
+    <div className="popup">
+      <h2>Add item</h2>
+
+      <form   onSubmit={(e) => {
+        console.log("formData", formData);
+    dispatch(addItem(formData));
+
+    setFormData({
+      title: "",
+      summary: "",
+      price: "",
+    });
+    e.preventDefault();
+  }}>
+    <input
+  type="text"
+  placeholder="Item name"
+  value={formData.title}
+  onChange={(e) =>
+    setFormData({ ...formData, title: e.target.value })
+  }
+/>
+
+<input
+  type="text"
+  placeholder="Item description"
+  value={formData.summary}
+  onChange={(e) =>
+    setFormData({ ...formData, summary: e.target.value })
+  }
+/>
+
+<input
+  type="number"
+  placeholder="Item price"
+  value={formData.price}
+  onChange={(e) =>
+    setFormData({ ...formData, price: e.target.value })
+  }
+/>
+
+        <button type="submit">Submit</button>
+      </form>
+
+      <button
+        className="close-btn"
+        onClick={() => props.setShowPopup(false)}
+      >
+        Close
+      </button>
+    </div>
+  </div>
+)}
+
       <div className="items">
         <div className="header-info" style={{ textAlign: 'center', marginBottom: '30px' }}>
           <div className="title" style={{ padding: '10px' }}>Delicious Burger 🍔</div>
           <div className="summary" style={{ padding: '0 10px 20px 10px' }}>Freshly grilled burger with crispy lettuce, cheese, and juicy patty.</div>
         </div>
 
-        {items.map((item, index) => (
+        {menu.map((item, index) => (
           <div key={index}>
             <div className="item-row">
               <div className="item-info">
